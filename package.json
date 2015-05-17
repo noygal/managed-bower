@@ -1,0 +1,37 @@
+{
+  "name": "managed-bower",
+  "version": "0.0.1",
+  "description": "Mange bower dependencies with html tags",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://noygal@github.com/noygal/managed-bower.git"
+  },
+  "keywords": [
+    "bower",
+    "html",
+    "tags",
+    "tag",
+    "managed"
+  ],
+  "author": "Gal Noy <gal@galnoy.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noygal/managed-bower/issues"
+  },
+  "homepage": "https://github.com/noygal/managed-bower#readme",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "through2": "^0.6.5"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "gulp": "^3.8.11",
+    "gulp-mocha": "^2.0.1",
+    "mocha": "^2.2.5",
+    "vinyl": "^0.4.6"
+  }
+}
