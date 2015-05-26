@@ -26,6 +26,7 @@
   "homepage": "https://github.com/noygal/managed-bower#readme",
   "dependencies": {
     "bower": "^1.4.1",
+    "es6-promise": "^2.1.1",
     "gulp": "^3.8.11",
     "htmlparser2": "^3.8.2",
     "through2": "^0.6.5"

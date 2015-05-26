@@ -4,7 +4,7 @@ var fs = require('fs');
 var managedBower = require('../index.js');
 
 describe('Manage bower tests', function(){
-	it('Simple example', function(){
+	it('Simple example', function(done){
 		var example = new File({
 		  ced: 'test/',
 		  base: 'test/examples/',
@@ -14,9 +14,12 @@ describe('Manage bower tests', function(){
 		var stream = managedBower({});
 		stream
 			.on('data', function (data) {
-				console.log(data);
+				done();
+			})
+			.on('error', function(error){
+				done(error);
 			});
+			
 		stream.write(example);
-		
 	});
 });

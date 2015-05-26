@@ -1,43 +1,49 @@
 var through = require('through2');
 var bower = require('bower');
-var htmlparser = require("htmlparser2");
+var htmlparser = require('htmlparser2');
+var Promise = require('es6-promise').Promise;
 
-function parseHtml(params) {
+function parseHtml(file) {
+	var promises = [];
 	var parser = new htmlparser.Parser({
 		onopentag: function (name, attribs) {
-			if (name === "script" && attribs.type === "text/javascript") {
-				console.log("JS! Hooray!");
-			}
-		},
-		ontext: function (text) {
-			console.log("-->", text);
-		},
-		onclosetag: function (tagname) {
-			if (tagname === "script") {
-				console.log("That's it?!");
+			if (name === 'script' && attribs['mamaged-bower'] === '') {
+				promises.push(bowerInstall(attribs.name));
 			}
 		}
 	});
-	parser.write("Xyz <script type='text/javascript'>var foo = '<<bar>>';</ script>");
+	parser.write(file);
 	parser.end();
+	return Promise.all(promises);
 }
 
-function bowerInstall(params) {
-	bower.commands
-		.install(['jquery'], { save: true }, { /* custom config */ })
-		.on('end', function (installed) {
-		console.log(installed);
+function bowerInstall(name) {
+	return new Promise(function (resolve, reject) {
+		bower.commands
+			.install([name], { save: false }, { /* custom config */ })
+			.on('error', function (error) {
+			reject(error);
+		})
+			.on('end', function (installed) {
+			resolve(installed);
+		});
 	});
-
 }
+
 function managedBower() {
 	return through.obj(function (fileStream, enc, callback) {
 		if (fileStream.isBuffer()) {
 			var file = String(fileStream.contents);
-			console.log(file);
-			file += 'hihihi';
-			fileStream.contents = new Buffer(file);
-			callback(null, fileStream);
+			parseHtml(file)
+				.then(function (results) {
+				console.log(results);
+				callback(null, fileStream);
+			})
+			.catch(function (error) {
+				console.log(error);				
+				callback(error);	
+			});
+			//fileStream.contents = new Buffer(file);
 		}
 
 		if (fileStream.isStream())
