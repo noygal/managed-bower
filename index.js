@@ -3,12 +3,12 @@ var bower = require('bower');
 var htmlparser = require('htmlparser2');
 var Promise = require('es6-promise').Promise;
 
-function parseHtml(file) {
+function parseHtml(file, config) {
 	var promises = [];
 	var parser = new htmlparser.Parser({
 		onopentag: function (name, attribs) {
 			if (name === 'script' && attribs['mamaged-bower'] === '') {
-				promises.push(bowerInstall(attribs.name));
+				promises.push(bowerInstall(attribs.name, config));
 			}
 		}
 	});
@@ -17,10 +17,10 @@ function parseHtml(file) {
 	return Promise.all(promises);
 }
 
-function bowerInstall(name) {
+function bowerInstall(name, config) {
 	return new Promise(function (resolve, reject) {
 		bower.commands
-			.install([name], { save: false }, { /* custom config */ })
+			.install([name], { save: false }, config)
 			.on('error', function (error) {
 			reject(error);
 		})
@@ -30,17 +30,18 @@ function bowerInstall(name) {
 	});
 }
 
-function managedBower() {
+function managedBower(config) {
+	config = config || {};
 	return through.obj(function (fileStream, enc, callback) {
 		if (fileStream.isBuffer()) {
 			var file = String(fileStream.contents);
-			parseHtml(file)
+			parseHtml(file, config)
 				.then(function (results) {
-				console.log(results);
+//				console.log(results);
 				callback(null, fileStream);
 			})
 			.catch(function (error) {
-				console.log(error);				
+//				console.log(error);				
 				callback(error);	
 			});
 			//fileStream.contents = new Buffer(file);
