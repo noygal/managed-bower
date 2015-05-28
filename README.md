@@ -10,8 +10,8 @@ Mange bower dependencies with html tags
 ```html
 <html>
 	<head>
-		<script type="text/javascript" mamaged-bower name="jquery" src="vendors/jquery/jquery.min.js"></script>
-		<script type="text/javascript" mamaged-bower name="lodash" src="vendors/lodash/lodash.min.js"></script>
+		<script type="text/javascript" managed-bower name="jquery" src="vendors/jquery/jquery.min.js"></script>
+		<script type="text/javascript" managed-bower name="lodash" src="vendors/lodash/lodash.min.js"></script>
 	</head>
 	<body>
 	</body>

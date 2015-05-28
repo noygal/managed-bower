@@ -7,7 +7,7 @@ function parseHtml(file, config) {
 	var promises = [];
 	var parser = new htmlparser.Parser({
 		onopentag: function (name, attribs) {
-			if (name === 'script' && attribs['mamaged-bower'] === '') {
+			if (name === 'script' && attribs['managed-bower'] === '') {
 				promises.push(bowerInstall(attribs.name, config));
 			}
 		}
