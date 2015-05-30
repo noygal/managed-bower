@@ -1,12 +1,33 @@
 # managed-bower
-Mange bower dependencies with html tags
+Mange bower dependencies with html attributes.
 
 ## Usage
 
+#### Gulp
+
+This is not fully compliment gulp plugin, but it follows most of the guidelines.
+
+The files are pipe without modification, so you can just drop it to the pipeline at any stage.
+
+```js
+var managedBower = require('managed-bower');
+
+gulp.task('html', function() {
+  gulp.src('./src/**/*.html')
+    .pipe(managedBower({directory: 'install/packages/here'}))
+		// .pipe(minifyHTML()) // the file are pipe without modification
+    .pipe(gulp.dest('./dist/'))
+});
+```
 
 
-#### HTML file tags
+#### HTML
 
+Just add ```managed-bower``` attribute to the ```<script>``` element to make the magic happen.
+
+You also need to provide the bower package name under ```name``` attribute.
+
+Example:
 ```html
 <html>
 	<head>
@@ -18,8 +39,13 @@ Mange bower dependencies with html tags
 </html>
 ```
 
-#### Javascript API
+#### Javascript
 
+Require the module, invoke it with ```config``` object, and then stream you files to it.
+
+The ```config``` object is passed on as is to bower install command, the most useful option is ```{ directory : 'install/packages/here' }``` but feel free to consult [bower docs](http://bower.io/docs/api/#programmatic-api).
+
+Example:
 ```javascript
 var managedBower = require('managed-bower');
 var File = require('vinyl');
